@@ -28,15 +28,15 @@ return inquirer.prompt ([
         message: 'Enter valid email address'
     },
     {
-        type: 'input',
+        type: 'number',
         name: 'office',
         message: 'Enter office number'
     },
     {
         type: 'list',
-        name: 'add',
+        name: 'role',
         message: 'Would you like to add a team member?',
-        choices: ['Engineer', 'Intern', 'Exit']
+        choices: ['Manager','Engineer', 'Intern', 'Exit']
     },
 ])}
 

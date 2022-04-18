@@ -11,6 +11,7 @@
         - getRole() -- return employee
     - manager
         - officeNumber
+        - getOfficeNumber
         - getRole() -- return manager
     - engineer
         - github username
