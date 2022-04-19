@@ -1,6 +1,6 @@
 const fs = require('fs')
 const inquirer = require('inquirer')
-const jest = require('jest')
+//const jest = require('jest')
 const generateHTML = require('./src/generateHTML')
 const Manager = require('./lib/manager')
 const Engineer = require('./lib/engineer')
@@ -8,67 +8,71 @@ const Intern = require('./lib/intern')
 
 const teamRoster = []
 
-const inputManager = () => {
-    return inquirer.prompt ([
-    {
-        type: 'input',
-        name: 'name',
-        message: "Enter team member's name",
-        validate: function (answer) {
-            if(answer = !/[a-z]/.test(answer)) {
-                console.log('Please enter a valid name')
-                return false
+const inputManager = async () => {
+    const addManager = await inquirer.prompt([
+        {
+            type: 'input',
+            name: 'name',
+            message: "Enter team member's name",
+            validate: function (answer_1) {
+                if (answer_1 = !/[a-z]/.test(answer_1)) {
+                    console.log('Please enter a valid name')
+                    return false
+                }
+                return true
             }
-            return true;
-        }
-    },
-    {
-        type: 'number',
-        name: 'id',
-        message: 'Enter valid employee ID number',
-        validate: function (answer) {
-            if(answer = !/[1-9]/.test(answer)) {
-                console.log('Please enter a valid employee ID')
-                return false
+        },
+        {
+            type: 'number',
+            name: 'id',
+            message: 'Enter valid employee ID number',
+            validate: function (answer_3) {
+                if (answer_3 = !/[1-9]/.test(answer_3)) {
+                    console.log('Please enter a valid employee ID')
+                    return false
+                }
+                return true
             }
-            return true
-        }
-    },
-    {
-        type: 'input',
-        name: 'email',
-        message: 'Enter valid email address',
-        validate: answer => {
-            if(answer = !/\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/.test(answer)){
-                console.log('Please enter valid email')
-                return false
+        },
+        {
+            type: 'input',
+            name: 'email',
+            message: 'Enter valid email address',
+            validate: answer_5 => {
+                if (answer_5 = !/\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/.test(answer_5)) {
+                    console.log('Please enter valid email')
+                    return false
+                }
+                return true
             }
-            return true
-        }
-    },
-    {
-        type: 'number',
-        name: 'office',
-        message: 'What is the office number?',
-        validate: function(answer) {
-            if(answer = !/[1-9]/.test(answer)) {
-                return false
-                console.log('Please enter a valid number')
+        },
+        {
+            type: 'number',
+            name: 'office',
+            message: 'What is the office number?',
+            validate: function (answer_7) {
+                if (answer_7 = !/[1-9]/.test(answer_7)) {
+                    return false
+                }
+                return true
             }
-            return true
-        }
-    },
-])
-.then(addManager => {
-    const {name, id, email, office} = addManager;
-    const manager = new Manager (name, id, email, office);
-    teamRoster.push(manager);
-    console.log(manager);
-})
+        },
+    ])
+    .then(addManager => {
+        const { name, id, email, office } = addManager
+        const manager = new Manager(name, id, email, office)
+        teamRoster.push(manager)
+        console.log(manager)
+    })    
 }
 
-const inputEmployee = () => {
-    inquirer.prompt([
+const inputEmployee = async() => {
+    console.log(`
+    =============
+    I'm going to cry
+    =============
+    `)
+    await inquirer.prompt([
         {
             type: 'list',
             name: 'position',
@@ -159,152 +163,116 @@ const inputEmployee = () => {
             },
         
     ])
+}
 
-    .then(memberInfo => {
+function startingHTML() {
+    const html = `
+    <!doctype html>
+<html lang="en">
+  <head>    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://kit.fontawesome.com/308e3ed2db.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
 
-        let {name, id, email, position, office, github, school, addMore} = memberInfo;
-        let member
-
-        if(position === 'Manager'){
-            member = new Manager(name, id, email, office)
-            console.log(member)
-        } else if (position === 'Engineer'){
-            member = new Engineer(name, id, email, github)
-            console.log(member)
-        } else {
-            member = new Intern(name, id, email, school)
+    <title>Hello, Team!</title>
+  </head>
+  <body>
+    <header class="jumbotron jumbotron-fluid text-center bg-danger text-light">
+        <div class="container">
+          <h1 class="display-4">Meet the Team</h1>          
+        </div>
+    </header>
+    <main class="container d-flex justify-content-center flex-wrap">
+    `
+    fs.writeFile('./dist/index.html', html, function(err){
+        if(err){
+            console.log(err)
         }
+    })
+    console.log('starting')
+}
 
-        teamRoster.push(member)
-
-        if(addMore){
-            return inputEmployee(teamRoster)
-        } else {
-            return teamRoster
+function addingHtml(employeeMember) {
+    return new Promise(function(resolve,reject) {
+        const name = employeeMember.getName()
+        const position = employeeMember.getRole()
+        const id = employeeMember.getId()
+        const email = employeeMember.getEmail()
+        let data = ''
+        if (position === 'Manager'){
+            const officeNum = employeeMember.getOfficeNumber
         }
     })
 }
+    
 
-// const questionsEmployee = () => {
+//     .then(memberInfo => {
 
-//  function questionsEmployee() {inquirer.prompt ([
-//     {
-//         type: 'input',
-//         name: 'name',
-//         message: "Enter team member's name",
-//         validate: function (answer) {
-//             if(answer = !/[a-z]/.test(answer)) {
-//                 console.log('Please enter a valid name')
-//                 return false
-//             }
-//             return true;
+//         let {name, id, email, position, office, github, school, addMore} = memberInfo;
+//         let member
+
+//         if(position === 'Manager'){
+//             member = new Manager(name, id, email, office)
+//             console.log(member)
+//         } else if (position === 'Engineer'){
+//             member = new Engineer(name, id, email, github)
+//             console.log(member)
+//         } else {
+//             member = new Intern(name, id, email, school)
+//             console.log(member)
 //         }
-//     },
-//     {
-//         type: 'number',
-//         name: 'id',
-//         message: 'Enter valid employee ID number',
-//         validate: function (answer) {
-//             if(answer.id = !/[1-9]/.test(answer)) {
-//                 console.log('Please enter a valid employee ID')
-//                 return false
-//             }
-//             return true
+
+//         teamRoster.push(member)
+
+//         if(addMore){
+//             return inputEmployee(teamRoster)
+//         } else {
+//             return teamRoster
+            
 //         }
-//     },
-//     {
-//         type: 'input',
-//         name: 'email',
-//         message: 'Enter valid email address',
-//         validate: answer => {
-//             if(answer = !/\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/.test(answer)){
-//                 console.log('Please enter valid email')
-//                 return false
-//             }
-//             return true
-//         }
-//     },
-//     {
-//         type: 'list',
-//         name: 'position',
-//         message: 'Enter team member position',
-//         choices: ['Manager', 'Engineer', 'Intern']
-//     },  
-// ])
-
-
-
-
-// const init = () => {
-//     questionsEmployee()
-//         .then(({name, id, email, position}) => {
-//             let employeePosition = ''
-//             if(position === "Manager") {
-//                 employeePosition = "Office Number"
-//             } else if(position === "Engineer"){
-//                 employeePosition = "GitHub username"
-//             } else {
-//                 employeePosition = "School name"
-//             }
-//             inquirer.prompt([{
-//                 type: 'input',
-//                 name: 'employeePosition',
-//                 message: `Enter ${employeePosition}`
-//             },
-//             {
-//                 type: 'list',
-//                 name: 'addEmployee',
-//                 message: 'Would you like to add another team member?',                
-//                 choices: ['Yes', 'No']
-//             }])
-//                 .then(({employeePosition, addEmployee}) => {
-//                     let newEmployee
-//                     if(employeePosition === 'Manager'){
-//                         newEmployee = new Manager(name, id, email, employeePosition)
-//                     } else if (employeePosition === 'Engineer'){
-//                         newEmployee = new Engineer(name, id, email, employeePosition)
-//                     } else {
-//                         newEmployee = new Intern (name, id, email, employeePosition)
-//                     } //else
-//                     teamRoster.push(newEmployee)
-                    
-//                     .then(() => {
-//                         if(addEmployee === 'Yes') {
-//                             questionsEmployee()
-//                         } else {
-//                             console.log('done')}                
-//                     })
-//                 })
-//             })
-
-//  }
-        // .then(({employeePosition, addEmployee}) => {
-        //     let newEmployee
-        //     if(employeePosition === 'Manager'){
-        //         newEmployee = new Manager(name, id, email, employeePosition)
-        //     } else if (employeePosition === 'Engineer'){
-        //         newEmployee = new Engineer(name, id, email, employeePosition)
-        //     } else {
-        //         newEmployee = new Intern (name, id, email, employeePosition)
-        //     }
-        //     teamRoster.push(newEmployee)
-        //     //console.log(teamRoster)
-        //     .then(() => {
-        //         if(addEmployee === 'Yes') {
-        //             questionsEmployee()
-        //         } else {
-        //             console.log('done')}                
-        //     })
-        // })
-        // .then(() => {
-        //     if(addEmployee) {
-        //         questionsEmployee()
-        //     }
-        // })
-//         .catch((err) => console.error(err))
+//     })
+//     console.log(teamRoster)
 // }
+
+// const writeFile = data => {
+//     fs.writeFileSync('./dist/index.html',data, err => {
+//         if(err) {
+//             console.log(err)
+//             return
+//         } else {
+//         console.log('Done')
+//         }
+//     })
+// }
+
+function init(){
+startingHTML()
 inputManager()
     .then(inputEmployee)
+    // .then(teamRoster => {
+    //     return generateHTML(teamRoster)
+    // })
+    // .then(html => {
+    //     return writeFile(html)
+    // })    
     .catch(err => {
         console.log(err)
     })
+
+}
+
+
+// inputManager()
+//     .then(inputEmployee)
+//     .then(teamRoster => {
+//         return generateHTML(teamRoster)
+//     })
+//     .then(html => {
+//         return writeFile(html)
+//     })    
+//     .catch(err => {
+//         console.log(err)
+//     })
+
+init()
