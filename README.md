@@ -1,4 +1,5 @@
 # Team Profile Generator ![Badge for license](https://img.shields.io/badge/license-mit-brightgreen) 
+[See the app in action](https://drive.google.com/file/d/1GSEZapJNnAhkbcMZq15xl4ClvY_Rjzg7/view)
 
 ## Table of Contents
 - [Description](#description)
@@ -19,6 +20,7 @@ To run the application you will need `Node.js`, as well as the `Inquirer`, and `
 
 ### [How-To](#table-of-contents)
 
+[View the demo](https://drive.google.com/file/d/1GSEZapJNnAhkbcMZq15xl4ClvY_Rjzg7/view)
 To use Team Profile Generator just type `node index.js` and answer the prompts.
 
 ### [Contribution](#table-of-contents)

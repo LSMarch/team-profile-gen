@@ -213,5 +213,4 @@ const endHTML = () => {
     console.log('finished');
 }
 
-
 init();
